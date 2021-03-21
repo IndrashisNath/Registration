@@ -1,0 +1,194 @@
+<mat-card class="example-card mat-elevation-z8">
+  <mat-card-header>
+    <mat-card-title>Content Management System</mat-card-title>
+    <mat-card-subtitle>Registration</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="my-form" [formGroup]="registerForm" *ngIf="!submitted">
+      <mat-form-field class="full-width">
+        <mat-label>First Name</mat-label>
+        <input
+          matInput
+          placeholder="First name"
+          name="fname"
+          formControlName="firstName"
+          required
+        />
+        <mat-error> First name is <strong>required</strong> </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Last Name</mat-label>
+        <input
+          matInput
+          placeholder="Last Name"
+          name="lname"
+          formControlName="lastName"
+          required
+        />
+        <mat-error> Last name is <strong>required</strong> </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Contact</mat-label>
+        <input
+          matInput
+          placeholder="Contact"
+          name="contact"
+          formControlName="contact"
+          required
+        />
+        <mat-error> Contact is <strong>required</strong> </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Address</mat-label>
+        <input
+          matInput
+          placeholder="Address"
+          name="address"
+          formControlName="address"
+          required
+        />
+        <mat-error> Address is <strong>required</strong> </mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Date of Birth</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          placeholder="Choose a date"
+          formControlName="birthday"
+          required
+        />
+        <mat-error> Birthday is <strong>required</strong> </mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="onSubmit()"
+        [disabled]="!registerForm.valid"
+      >
+        Register
+      </button>
+      <button mat-raised-button color="accent" (click)="reset()">Reset</button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="example-card mat-elevation-z8">
+  <mat-form-field class="full-width">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="search" placeholder="Search an item" />
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="onSearch()">Search</button>
+
+  <mat-selection-list #selections [multiple]="false">
+    <mat-list-option
+      *ngFor="let item of searchData"
+      [value]="item"
+      (click)="onOptionSelected(item)"
+    >
+      {{ item.firstName }}
+    </mat-list-option>
+  </mat-selection-list>
+
+  <form class="my-form" [formGroup]="updateForm" *ngIf="isSelected">
+    <mat-form-field class="full-width">
+      <mat-label>First Name</mat-label>
+      <input
+        matInput
+        placeholder="First name"
+        name="fname"
+        formControlName="firstName"
+        required
+      />
+      <mat-error> First name is <strong>required</strong> </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input
+        matInput
+        placeholder="Last Name"
+        name="lname"
+        formControlName="lastName"
+        required
+      />
+      <mat-error> Last name is <strong>required</strong> </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Contact</mat-label>
+      <input
+        matInput
+        placeholder="Contact"
+        name="contact"
+        formControlName="contact"
+        required
+      />
+      <mat-error> Contact is <strong>required</strong> </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Address</mat-label>
+      <input
+        matInput
+        placeholder="Address"
+        name="address"
+        formControlName="address"
+        required
+      />
+      <mat-error> Address is <strong>required</strong> </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>Date of Birth</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        placeholder="Choose a date"
+        formControlName="birthday"
+        required
+      />
+      <mat-error> Birthday is <strong>required</strong> </mat-error>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="onUpdate()">
+      Update
+    </button>
+    <button mat-raised-button color="accent" (click)="onDelete()">
+      Delete
+    </button>
+  </form>
+</mat-card>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>FirstName</th>
+      <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>LastName</th>
+      <td mat-cell *matCellDef="let element">{{ element.lastName }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="contact">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contact</th>
+      <td mat-cell *matCellDef="let element">{{ element.contact }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="birthday">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Birthday</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.birthday | date: "fullDate" }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Address</th>
+      <td mat-cell *matCellDef="let element">{{ element.address }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
